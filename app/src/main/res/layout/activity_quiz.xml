@@ -1,34 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="16dp"
-    tools:context=".QuizActivity">
+    tools:context=".QuizActivity"
+    android:background="@color/background">
 
 
     <TextView
         android:id="@+id/text_view_score"
-        android:layout_width="200dp"
+        android:layout_width="390dp"
         android:layout_height="wrap_content"
         android:textColor="@android:color/black"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteX="212dp"
-        tools:layout_editor_absoluteY="103dp"
-        tools:ignore="MissingConstraints" />
+        android:textSize="30sp"
+        android:layout_above="@+id/text_view_question"
+        android:layout_marginBottom="50dp"/>
 
     <TextView
         android:id="@+id/text_view_question"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="20sp"
-        android:textColor="@android:color/black"
+        android:layout_width="390dp"
+        android:layout_height="150dp"
         android:layout_above="@+id/answers"
-        android:layout_marginBottom="16dp"
-        />
+        android:layout_marginBottom="50dp"
+        android:textColor="@android:color/black"
+        android:textSize="30sp" />
 
     <RadioGroup
         android:id="@+id/answers"
@@ -39,17 +35,20 @@
         <RadioButton
             android:id="@+id/radioButton1"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:buttonTint="@color/colorPrimary"/>
 
         <RadioButton
             android:id="@+id/radioButton2"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:buttonTint="@color/colorPrimary" />
 
         <RadioButton
             android:id="@+id/radioButton3"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:buttonTint="@color/colorPrimary" />
     </RadioGroup>
 
     <Button
@@ -58,7 +57,9 @@
         android:layout_height="wrap_content"
         android:text="Confirm"
         android:layout_below="@id/answers"
-        android:layout_marginTop="16dp"/>
+        android:layout_marginTop="100dp"
+        android:textColor="@android:color/white"
+        android:background="@color/colorPrimary"/>
 
     <Button
         android:id="@+id/button_back_to_menu"
@@ -66,7 +67,9 @@
         android:layout_height="wrap_content"
         android:text="Back to menu"
         android:layout_below="@id/button_confirm_next"
-        android:layout_marginTop="16dp" />
+        android:layout_marginTop="50dp"
+        android:textColor="@android:color/white"
+        android:background="@color/colorPrimary"/>
 
 </RelativeLayout>
 

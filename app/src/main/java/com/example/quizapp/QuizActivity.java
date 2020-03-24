@@ -1,10 +1,6 @@
 package com.example.quizapp;
-
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -12,13 +8,10 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.example.quizapp.Domain.Answer;
 import com.example.quizapp.Domain.Question;
-
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
 
 public class QuizActivity extends AppCompatActivity {
 
@@ -77,7 +70,6 @@ public class QuizActivity extends AppCompatActivity {
         TextView score = findViewById(R.id.text_view_score);
         getNextQuestion(question, answer1, answer2, answer3, nextQuestion, backToMenu, score);
 
-
         nextQuestion.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
@@ -121,9 +113,7 @@ public class QuizActivity extends AppCompatActivity {
             answer3.setVisibility(View.GONE);
             nextQuestion.setVisibility(View.GONE);
             backToMenu.setVisibility(View.VISIBLE);
-            score.setText("Your score is: " + QuizActivity.score);
-            //Intent intent = new Intent(this, MainActivity.class);
-            //startActivity(intent);
+            score.setText("Correct answers: " + QuizActivity.score);
         }else {
 
             Question questionToDisplay = this.getQuestion(questionNr);
@@ -153,4 +143,5 @@ public class QuizActivity extends AppCompatActivity {
             }
         }
     }
+
 }
