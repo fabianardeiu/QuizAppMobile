@@ -11,6 +11,7 @@ import android.widget.Toast;
 import com.example.quizapp.Domain.Answer;
 import com.example.quizapp.Domain.Question;
 import java.util.ArrayList;
+import java.util.Random;
 
 
 public class QuizActivity extends AppCompatActivity {
@@ -18,10 +19,16 @@ public class QuizActivity extends AppCompatActivity {
     private static int score = 0;
     private static int questionNr = 0;
     private static ArrayList<Question> questions = new ArrayList<Question>();
-
+    private static int questionsToDisplay = 5;
+    private static int displayedQuestions = 1;
+    private static Random rnd = new Random();
 
     public QuizActivity() {
         score = 0;
+        seedQuestions();
+    }
+
+    private static void seedQuestions(){
         ArrayList<Answer> q1Answers = new ArrayList<Answer>();
         q1Answers.add(new Answer(" cout << \"Hello World\";", false));
         q1Answers.add(new Answer(" System.out.println(\"Hello World\");", false));
@@ -51,6 +58,48 @@ public class QuizActivity extends AppCompatActivity {
         q5Answers.add(new Answer("final", false));
         q5Answers.add(new Answer("private", true));
         questions.add(new Question("Which access modifier makes the code only accessible within the same class?", q5Answers));
+
+        ArrayList<Answer> q6Answers = new ArrayList<Answer>();
+        q6Answers.add(new Answer("Value types", true));
+        q6Answers.add(new Answer("Reference types", false));
+        q6Answers.add(new Answer("Pointer types", false));
+        questions.add(new Question("Which of the following variable types can be assigned a value directly in C#?", q6Answers));
+
+        ArrayList<Answer> q7Answers = new ArrayList<Answer>();
+        q7Answers.add(new Answer("ToChar", false));
+        q7Answers.add(new Answer("ToByte", true));
+        q7Answers.add(new Answer("ToDateTime", false));
+        questions.add(new Question("Which of the following converts a type to a byte value in C#?", q7Answers));
+
+        ArrayList<Answer> q8Answers = new ArrayList<Answer>();
+        q8Answers.add(new Answer("ToString", false));
+        q8Answers.add(new Answer("ToSingle", false));
+        q8Answers.add(new Answer("ToUInt16", true));
+        questions.add(new Question("Which of the following converts a type to an unsigned int type in C#?", q8Answers));
+
+        ArrayList<Answer> q9Answers = new ArrayList<Answer>();
+        q9Answers.add(new Answer("elif", true));
+        q9Answers.add(new Answer("if", false));
+        q9Answers.add(new Answer("define", false));
+        questions.add(new Question("Which of the following preprocessor directive allows creating a compound conditional directive in C#?", q9Answers));
+
+        ArrayList<Answer> q10Answers = new ArrayList<Answer>();
+        q10Answers.add(new Answer("var a = new IComparable()", true));
+        q10Answers.add(new Answer("var a = new [] {0};", false));
+        q10Answers.add(new Answer("var a = new Int32();", false));
+        questions.add(new Question("Which of the following statements is not valid to create new object in C#?", q9Answers));
+
+        ArrayList<Answer> q11Answers = new ArrayList<Answer>();
+        q11Answers.add(new Answer("int[,] b = new int[10, 2];", false));
+        q11Answers.add(new Answer("int[][][] cc = new int[10][2][];", true));
+        q11Answers.add(new Answer("int[][] c = new int[10][];", false));
+        questions.add(new Question("The followings are some examples of integer arrays. Which expression is not valid in C#?", q11Answers));
+
+        ArrayList<Answer> q12Answers = new ArrayList<Answer>();
+        q12Answers.add(new Answer("class MyClass where T : IComparable", false));
+        q12Answers.add(new Answer("class MyClass where T : class", false));
+        q12Answers.add(new Answer("Both", true));
+        questions.add(new Question("When defining a class using C# Generics, which of the followings is invalid?", q11Answers));
     }
 
 
@@ -58,6 +107,8 @@ public class QuizActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_quiz);
+
+        generateQuestions();
 
         final Button nextQuestion = findViewById(R.id.button_confirm_next);
         final Button backToMenu = findViewById(R.id.button_back_to_menu);
@@ -84,7 +135,6 @@ public class QuizActivity extends AppCompatActivity {
                     TextView answer3 = findViewById(R.id.radioButton3);
                     TextView score = findViewById(R.id.text_view_score);
 
-
                     updateScore(answers);
                     getNextQuestion(question, answer1, answer2, answer3, nextQuestion, backToMenu,score);
                     answers.clearCheck();
@@ -105,8 +155,18 @@ public class QuizActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    private void generateQuestions(){
+        int index = rnd.nextInt(questions.size());
+        if (index > questions.size()/2){
+            questionNr = index-questionsToDisplay;
+        }
+        else {
+            questionNr = index;
+        }
+    }
+
     private void getNextQuestion(TextView question, TextView answer1, TextView answer2, TextView answer3, Button nextQuestion, Button backToMenu, TextView score){
-        if(questions.size() == questionNr){
+        if(displayedQuestions == questionsToDisplay){
             question.setVisibility(View.GONE);
             answer1.setVisibility(View.GONE);
             answer2.setVisibility(View.GONE);
@@ -115,8 +175,7 @@ public class QuizActivity extends AppCompatActivity {
             backToMenu.setVisibility(View.VISIBLE);
             score.setText("Correct answers: " + QuizActivity.score);
         }else {
-
-            Question questionToDisplay = this.getQuestion(questionNr);
+            Question questionToDisplay = this.questions.get(questionNr);
             question.setText(questionToDisplay.getText());
 
             ArrayList<Answer> answers = questionToDisplay.getAnswers();
@@ -124,15 +183,12 @@ public class QuizActivity extends AppCompatActivity {
             answer2.setText(answers.get(1).getText());
             answer3.setText(answers.get(2).getText());
             questionNr +=1;
+            displayedQuestions +=1;
         }
     }
 
-    private Question getQuestion(int questionNr){
-        return questions.get(questionNr);
-    }
-
     private void updateScore(RadioGroup answers){
-        Question questionToCalculate = this.getQuestion(questionNr-1);
+        Question questionToCalculate = this.questions.get(questionNr-1);
         int userAnswerId = answers.getCheckedRadioButtonId();
         RadioButton userAnswer = findViewById(userAnswerId);
         for (int i=0; i < questionToCalculate.getAnswers().size(); i++){
