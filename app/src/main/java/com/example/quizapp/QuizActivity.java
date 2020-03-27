@@ -16,19 +16,21 @@ import java.util.Random;
 
 public class QuizActivity extends AppCompatActivity {
 
-    private static int score = 0;
-    private static int questionNr = 0;
-    private static ArrayList<Question> questions = new ArrayList<Question>();
+    private static int score;
+    private static int questionNr;
+    private static int displayedQuestions;
     private static int questionsToDisplay = 5;
-    private static int displayedQuestions = 1;
+    private ArrayList<Question> questions = new ArrayList<Question>();
     private static Random rnd = new Random();
 
     public QuizActivity() {
         score = 0;
+        questionNr = 0;
+        displayedQuestions = 0;
         seedQuestions();
     }
 
-    private static void seedQuestions(){
+    private void seedQuestions(){
         ArrayList<Answer> q1Answers = new ArrayList<Answer>();
         q1Answers.add(new Answer(" cout << \"Hello World\";", false));
         q1Answers.add(new Answer(" System.out.println(\"Hello World\");", false));
@@ -87,7 +89,7 @@ public class QuizActivity extends AppCompatActivity {
         q10Answers.add(new Answer("var a = new IComparable()", true));
         q10Answers.add(new Answer("var a = new [] {0};", false));
         q10Answers.add(new Answer("var a = new Int32();", false));
-        questions.add(new Question("Which of the following statements is not valid to create new object in C#?", q9Answers));
+        questions.add(new Question("Which of the following statements is not valid to create new object in C#?", q10Answers));
 
         ArrayList<Answer> q11Answers = new ArrayList<Answer>();
         q11Answers.add(new Answer("int[,] b = new int[10, 2];", false));
@@ -99,7 +101,7 @@ public class QuizActivity extends AppCompatActivity {
         q12Answers.add(new Answer("class MyClass where T : IComparable", false));
         q12Answers.add(new Answer("class MyClass where T : class", false));
         q12Answers.add(new Answer("Both", true));
-        questions.add(new Question("When defining a class using C# Generics, which of the followings is invalid?", q11Answers));
+        questions.add(new Question("When defining a class using C# Generics, which of the followings is invalid?", q12Answers));
     }
 
 
@@ -118,8 +120,8 @@ public class QuizActivity extends AppCompatActivity {
         TextView answer1 = findViewById(R.id.radioButton1);
         TextView answer2 = findViewById(R.id.radioButton2);
         TextView answer3 = findViewById(R.id.radioButton3);
-        TextView score = findViewById(R.id.text_view_score);
-        getNextQuestion(question, answer1, answer2, answer3, nextQuestion, backToMenu, score);
+        TextView scoreText = findViewById(R.id.text_view_score);
+        getNextQuestion(question, answer1, answer2, answer3, nextQuestion, backToMenu, scoreText);
 
         nextQuestion.setOnClickListener(new View.OnClickListener(){
             @Override
@@ -133,10 +135,10 @@ public class QuizActivity extends AppCompatActivity {
                     TextView answer1 = findViewById(R.id.radioButton1);
                     TextView answer2 = findViewById(R.id.radioButton2);
                     TextView answer3 = findViewById(R.id.radioButton3);
-                    TextView score = findViewById(R.id.text_view_score);
+                    TextView scoreText = findViewById(R.id.text_view_score);
 
                     updateScore(answers);
-                    getNextQuestion(question, answer1, answer2, answer3, nextQuestion, backToMenu,score);
+                    getNextQuestion(question, answer1, answer2, answer3, nextQuestion, backToMenu,scoreText);
                     answers.clearCheck();
                 }
             }
@@ -165,7 +167,7 @@ public class QuizActivity extends AppCompatActivity {
         }
     }
 
-    private void getNextQuestion(TextView question, TextView answer1, TextView answer2, TextView answer3, Button nextQuestion, Button backToMenu, TextView score){
+    private void getNextQuestion(TextView question, TextView answer1, TextView answer2, TextView answer3, Button nextQuestion, Button backToMenu, TextView scoreText){
         if(displayedQuestions == questionsToDisplay){
             question.setVisibility(View.GONE);
             answer1.setVisibility(View.GONE);
@@ -173,7 +175,7 @@ public class QuizActivity extends AppCompatActivity {
             answer3.setVisibility(View.GONE);
             nextQuestion.setVisibility(View.GONE);
             backToMenu.setVisibility(View.VISIBLE);
-            score.setText("Correct answers: " + QuizActivity.score);
+            scoreText.setText("Score: " + score + "/" + questionsToDisplay);
         }else {
             Question questionToDisplay = this.questions.get(questionNr);
             question.setText(questionToDisplay.getText());
