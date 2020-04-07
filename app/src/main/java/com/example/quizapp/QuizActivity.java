@@ -1,7 +1,13 @@
 package com.example.quizapp;
 import androidx.appcompat.app.AppCompatActivity;
+
+import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
 import android.os.Bundle;
+import android.provider.CalendarContract;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RadioButton;
@@ -10,6 +16,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 import com.example.quizapp.Domain.Answer;
 import com.example.quizapp.Domain.Question;
+import com.google.android.material.snackbar.Snackbar;
+
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -137,7 +145,7 @@ public class QuizActivity extends AppCompatActivity {
                     TextView answer3 = findViewById(R.id.radioButton3);
                     TextView scoreText = findViewById(R.id.text_view_score);
 
-                    updateScore(answers);
+                    updateScore(answers, v);
                     getNextQuestion(question, answer1, answer2, answer3, nextQuestion, backToMenu,scoreText);
                     answers.clearCheck();
                 }
@@ -189,7 +197,7 @@ public class QuizActivity extends AppCompatActivity {
         }
     }
 
-    private void updateScore(RadioGroup answers){
+    private void updateScore(RadioGroup answers, View v){
         Question questionToCalculate = this.questions.get(questionNr-1);
         int userAnswerId = answers.getCheckedRadioButtonId();
         RadioButton userAnswer = findViewById(userAnswerId);
@@ -197,6 +205,17 @@ public class QuizActivity extends AppCompatActivity {
             if(questionToCalculate.getAnswers().get(i).isCorrect()){
                 if(questionToCalculate.getAnswers().get(i).getText().equals(userAnswer.getText())){
                     score +=1;
+                }
+                else{
+                    final Snackbar snackbar = Snackbar.make(v, "Correct answer was: " + questionToCalculate.getAnswers().get(i).getText(), Snackbar.LENGTH_INDEFINITE);
+                    snackbar.getView().setBackgroundColor(Color.RED);
+                    snackbar.setActionTextColor(Color.WHITE);
+                    snackbar.setAction("Ok", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            snackbar.dismiss();
+                        }
+                    }).show();
                 }
             }
         }
